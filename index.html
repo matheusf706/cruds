@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Adicione sua tarefa</p>
+    <input id = "entrada" type="text" value = teste>
+    <button onclick="salvarDados()">Salvar</button>
+
+    <br>
+    <p>Tarefa a fazer:</p>
+    <div id = "editar"></div>
+    <div> 
+        <ul id ="resultados"></ul>
+    </div>
+
+
+    <script>
+        let listadetarefas = [];
+        let index = 0;
+
+        function salvarDados () {
+            let entrada = document.getElementById("entrada").value;
+            let entradaObj = {
+                id: index,
+                texto: entrada
+            };
+            index++;
+            listadetarefas.push(entradaObj);
+            //crud
+            mostrar();
+        };
+
+        function mostrar () {
+            let ul = document.getElementById("resultados");
+            let html = "";
+            listadetarefas.forEach(elemento => {
+                console.log(elemento);
+                html += `<li>${elemento.texto}
+                    <button onclick="editar(${elemento.id})">Editar</button>
+                    <button onclick="deletar(${elemento.id})">Deletar</button>
+                    </li>`;
+                
+            });
+            ul.innerHTML = html;
+        };
+        function editar (id) {
+            let resultado = listadetarefas.find(obj => obj.id === id);
+            let html = `<input type="text" id = "textoParaEditar">
+    <button onclick="editarDados(${id})">Editar</button>`;
+    let diveditar = document.getElementById('editar');
+    diveditar.innerHTML = html;
+            console.log(resultado);
+        };
+        function editarDados (id) {
+            let textoParaEditar = document.getElementById("textoParaEditar").value;
+            let resultado = listadetarefas.find(obj => obj.id === id);
+            resultado.texto = textoParaEditar;
+            mostrar();
+            let diveditar = document.getElementById('editar');
+            diveditar.innerHTML = "";
+        };
+        function deletar (id) {
+            let novalista = listadetarefas.filter(obj => obj.id !== id);
+            listadetarefas = novalista;
+            mostrar();
+        };
+
+    </script>
+</body>
+</html>
